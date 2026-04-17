@@ -65,17 +65,17 @@ def get_http_session() -> requests.Session:
 
 def load_dataframe() -> pd.DataFrame:
     """
-    Fetches cloudinary_url and model_name_original from images JOIN models.
-    Returns only rows where cloudinary_url is not null or empty.
+    Fetches the best available image URL and model_name_original from images JOIN models.
+    Returns only rows where at least one image URL exists.
     """
     query = """
         SELECT
-            i.cloudinary_url,
+            COALESCE(i.cloudinary_url, i.url) AS cloudinary_url,
             m.model_name_original AS label
         FROM images i
         INNER JOIN models m ON i.model_id = m.model_id
-        WHERE i.cloudinary_url IS NOT NULL
-          AND i.cloudinary_url <> ''
+        WHERE COALESCE(i.cloudinary_url, i.url) IS NOT NULL
+          AND COALESCE(i.cloudinary_url, i.url) <> ''
           AND m.model_name_original IS NOT NULL
           AND TRIM(m.model_name_original) <> ''
             AND POSITION('facebook' IN LOWER(m.model_name_original)) = 0
@@ -108,6 +108,9 @@ def add_cloudinary_transform(url: str, transform: str = CLD_TRANSFORM) -> str:
         https://res.cloudinary.com/demo/image/upload/w_224,h_224,c_fill/sample.jpg
     """
     # Artıq transformasiya varsa dəyişdirme
+    if "res.cloudinary.com" not in url:
+        return url
+
     if transform in url:
         return url
     # /upload/ sonrasına transformasiya yerləşdir
@@ -182,6 +185,23 @@ def fetch_image(url: str) -> np.ndarray | None:
 
 
 # ─ Custom Keras Data Generator using keras.utils.Sequence
+
+def filter_valid_image_rows(df: pd.DataFrame, min_valid_rows: int = 1) -> pd.DataFrame:
+    """Keep only rows whose image URLs can actually be fetched."""
+    valid_indices: list[int] = []
+
+    for index, row in df.iterrows():
+        if fetch_image(row["cloudinary_url"]) is not None:
+            valid_indices.append(index)
+
+    filtered_df = df.loc[valid_indices].copy().reset_index(drop=True)
+    print(f"[IMG] {len(filtered_df)}/{len(df)} rows verified as fetchable.")
+
+    if len(filtered_df) < min_valid_rows:
+        raise RuntimeError("No usable training images were found after URL validation.")
+
+    return filtered_df
+
 
 class OrigamiDataGenerator(tf.keras.utils.Sequence):
     """

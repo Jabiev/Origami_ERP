@@ -1,0 +1,36 @@
+@origami_api_HostAddress = http://localhost:5102
+
+GET {{origami_api_HostAddress}}/api/health
+Accept: application/json
+
+###
+
+GET {{origami_api_HostAddress}}/api/discovery/overview
+Accept: application/json
+
+###
+
+GET {{origami_api_HostAddress}}/api/showcase/hero?limit=6
+Accept: application/json
+
+###
+
+GET {{origami_api_HostAddress}}/api/analytics/landscape
+Accept: application/json
+
+###
+
+GET {{origami_api_HostAddress}}/api/analytics/creators
+Accept: application/json
+
+###
+
+GET {{origami_api_HostAddress}}/api/catalog/models?query=crane&limit=5
+Accept: application/json
+
+###
+
+GET {{origami_api_HostAddress}}/api/resources/books?limit=5
+Accept: application/json
+
+###

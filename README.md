@@ -158,6 +158,32 @@ python ai/train_model.py
 python ai/predict_image.py path/to/image.jpg
 ```
 
+### Run ASP.NET Web API
+```bash
+cd origami_api
+dotnet run
+```
+
+Core endpoints:
+- `GET /api/health`
+- `GET /api/showcase/hero`
+- `GET /api/discovery/overview`
+- `GET /api/discovery/featured`
+- `GET /api/analytics/landscape`
+- `GET /api/analytics/creators`
+- `GET /api/catalog/models`
+- `GET /api/catalog/models/{modelId}`
+- `GET /api/creators`
+- `GET /api/creators/{creatorId}`
+- `GET /api/resources/books`
+- `GET /api/resources/diagrams`
+- `GET /api/resources/articles`
+- `GET /api/resources/calls`
+- `POST /api/recognition/predict`
+
+For local development docs:
+- `http://localhost:5102/swagger` or the URL shown by `dotnet run`
+
 ### Scrape Data
 ```bash
 # Full scrape from all sources

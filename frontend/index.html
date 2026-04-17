@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Origami Recognition System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <div class="ambient ambient-left"></div>
+    <div class="ambient ambient-right"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#hero">
+        <span class="brand-mark">折</span>
+        <span>
+          <strong>Origami Recognition</strong>
+          <small>AI catalog, creators, resources, recognition</small>
+        </span>
+      </a>
+
+      <nav class="topnav">
+        <a href="#showcase">Showcase</a>
+        <a href="#recognition">Recognition</a>
+        <a href="#catalog">Catalog</a>
+        <a href="#creators">Creators</a>
+        <a href="#resources">Resources</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="hero" class="hero section">
+        <div class="hero-copy">
+          <p class="eyebrow">Fabulous origami intelligence</p>
+          <h1>Turn a capable backend into a front stage worth staring at.</h1>
+          <p class="lede">
+            This interface presents the real strengths of the origami recognition system:
+            searchable models, creator discovery, curated learning resources, analytics, and live image prediction.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#recognition">Try recognition</a>
+            <a class="button button-secondary" href="#catalog">Explore catalog</a>
+          </div>
+
+          <form id="api-config" class="api-config">
+            <label for="apiBase">API base</label>
+            <div class="api-config-row">
+              <input id="apiBase" name="apiBase" type="url" value="http://localhost:5102/api" spellcheck="false">
+              <button type="submit" class="button button-ghost">Reload data</button>
+            </div>
+            <p id="apiStatus" class="api-status">Using live API data when available.</p>
+          </form>
+        </div>
+
+        <div class="hero-panel">
+          <div class="hero-card hero-card-feature">
+            <p class="card-kicker">Platform presence</p>
+            <div id="overviewGrid" class="stat-grid"></div>
+          </div>
+          <div class="hero-card hero-card-quote">
+            <p class="card-kicker">What the API already offers</p>
+            <ul class="feature-list">
+              <li>Searchable origami catalog with filters</li>
+              <li>Creator portfolios and aliases</li>
+              <li>CFC books, articles, calls, diagrams</li>
+              <li>Landscape analytics and creator analytics</li>
+              <li>Image upload recognition via Python bridge</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="showcase" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Showcase</p>
+          <h2>Signature pieces, featured creators, and recognition highlights.</h2>
+        </div>
+
+        <div class="showcase-layout">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Signature models</h3>
+              <span class="pill">from `/showcase/hero`</span>
+            </div>
+            <div id="signatureModels" class="showcase-cards"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Recognition flavor</h3>
+              <span class="pill">top predictions</span>
+            </div>
+            <div id="recognitionExample" class="prediction-stack"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Featured creators</h3>
+              <span class="pill">discovery</span>
+            </div>
+            <div id="featuredCreators" class="list-cards"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="recognition" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Recognition</p>
+          <h2>Upload an origami image and let the backend classify it live.</h2>
+        </div>
+
+        <div class="recognition-layout">
+          <article class="panel recognition-form-panel">
+            <form id="recognitionForm" class="recognition-form">
+              <label class="upload-zone" for="recognitionFile">
+                <input id="recognitionFile" name="file" type="file" accept="image/*">
+                <span class="upload-title">Drop an image here or click to browse</span>
+                <span class="upload-subtitle">The frontend sends the file to `POST /api/recognition/predict`.</span>
+              </label>
+              <div class="recognition-actions">
+                <button type="submit" class="button button-primary">Analyze image</button>
+                <button id="useSampleImage" type="button" class="button button-secondary">Load sample path hint</button>
+              </div>
+              <p id="recognitionStatus" class="muted">No file selected.</p>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Predictions</h3>
+            </div>
+            <div id="recognitionResults" class="empty-state">Upload an image to see predictions and matched models.</div>
+          </article>
+        </div>
+      </section>
+
+      <section id="analytics" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Analytics</p>
+          <h2>Live landscape metrics translated into polished visual cards.</h2>
+        </div>
+
+        <div class="analytics-layout">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Difficulty distribution</h3>
+            </div>
+            <div id="difficultyChart" class="metric-bars"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Top creators</h3>
+            </div>
+            <div id="topCreatorsChart" class="metric-bars"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Technique usage</h3>
+            </div>
+            <div id="techniqueGrid" class="chip-cloud"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Image coverage</h3>
+            </div>
+            <div id="imageCoverage" class="coverage-card"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="catalog" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Catalog</p>
+          <h2>Search models by name, difficulty, paper shape, and cutting or glue usage.</h2>
+        </div>
+
+        <div class="catalog-layout">
+          <article class="panel">
+            <form id="catalogForm" class="filter-form">
+              <input name="query" type="search" placeholder="Search model or creator">
+              <select name="difficulty">
+                <option value="">All difficulty levels</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+              <input name="paperShape" type="text" placeholder="Paper shape">
+              <select name="usesCutting">
+                <option value="">Cutting: any</option>
+                <option value="true">Uses cutting</option>
+                <option value="false">No cutting</option>
+              </select>
+              <select name="usesGlue">
+                <option value="">Glue: any</option>
+                <option value="true">Uses glue</option>
+                <option value="false">No glue</option>
+              </select>
+              <button type="submit" class="button button-primary">Search catalog</button>
+            </form>
+            <div id="catalogResults" class="catalog-results"></div>
+          </article>
+
+          <aside class="panel details-panel">
+            <div class="panel-header">
+              <h3>Model details</h3>
+            </div>
+            <div id="catalogDetails" class="empty-state">Choose a model to inspect publications, images, and material details.</div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="creators" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Creators</p>
+          <h2>Bring origami authorship forward with searchable creator profiles.</h2>
+        </div>
+
+        <div class="catalog-layout">
+          <article class="panel">
+            <form id="creatorForm" class="filter-form creator-form">
+              <input name="query" type="search" placeholder="Search creators or aliases">
+              <button type="submit" class="button button-primary">Find creators</button>
+            </form>
+            <div id="creatorResults" class="catalog-results"></div>
+          </article>
+
+          <aside class="panel details-panel">
+            <div class="panel-header">
+              <h3>Creator details</h3>
+            </div>
+            <div id="creatorDetails" class="empty-state">Select a creator to view aliases, biography, and models.</div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="resources" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Resources</p>
+          <h2>Books, diagrams, articles, and community calls collected in one place.</h2>
+        </div>
+
+        <article class="panel">
+          <div class="resource-tabs">
+            <button class="tab is-active" data-resource="books" type="button">Books</button>
+            <button class="tab" data-resource="diagrams" type="button">Diagrams</button>
+            <button class="tab" data-resource="articles" type="button">Articles</button>
+            <button class="tab" data-resource="calls" type="button">Calls</button>
+          </div>
+          <div id="resourceResults" class="resource-grid"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <template id="metricBarTemplate">
+    <div class="metric-bar">
+      <div class="metric-label-row">
+        <span class="metric-label"></span>
+        <span class="metric-value"></span>
+      </div>
+      <div class="metric-track"><span class="metric-fill"></span></div>
+    </div>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+</html>

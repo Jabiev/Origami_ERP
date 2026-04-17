@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 sys.path.insert(0, ROOT_DIR)
 
-from ai.data_generator import load_dataframe, OrigamiDataGenerator  # noqa: E402
+from ai.data_generator import filter_valid_image_rows, load_dataframe, OrigamiDataGenerator  # noqa: E402
 
 # Configuration constants
 IMG_SIZE        = (224, 224)
@@ -327,6 +327,16 @@ def main():
         "    Reduced data: "
         f"{len(df)} images, {df['label'].nunique()} classes "
         f"(from {raw_classes})"
+    )
+
+    print("\n[1.3] Verifying image URLs...")
+    df = filter_valid_image_rows(df, min_valid_rows=1)
+
+    print("\n[1.4] Rebalancing after URL validation...")
+    df = reduce_classes(df)
+    print(
+        "    Validated data: "
+        f"{len(df)} images, {df['label'].nunique()} classes"
     )
 
     train_df, val_df = split_dataframe_by_label(df, val_split=VAL_SPLIT)
